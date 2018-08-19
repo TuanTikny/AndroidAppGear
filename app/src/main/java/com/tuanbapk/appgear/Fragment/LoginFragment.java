@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tuanbapk.appgear.Base.StringBase;
 import com.tuanbapk.appgear.R;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
@@ -30,6 +31,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         initViews(view);
         return view;     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        edt_email.setText(pref.getString(StringBase.EMAIL, ""));
+        edt_password.setText(pref.getString(StringBase.PASS, ""));
+    }
 
     private void initViews(View view) {
         pref = getActivity().getPreferences(0);

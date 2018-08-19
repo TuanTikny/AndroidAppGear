@@ -1,6 +1,7 @@
 package com.tuanbapk.appgear.Fragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatButton;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tuanbapk.appgear.Base.ApiBase;
+import com.tuanbapk.appgear.Base.StringBase;
 import com.tuanbapk.appgear.ConnectData.AsyncAddUser;
 import com.tuanbapk.appgear.R;
 
@@ -30,6 +32,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private EditText et_email,et_pass1,et_pass2;
     private TextView tv_login;
     private ProgressBar progress;
+    private SharedPreferences pref;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initViews(View view) {
-
+        pref = getActivity().getPreferences(0);
         btn_register = (AppCompatButton)view.findViewById(R.id.btn_register);
         tv_login = (TextView)view.findViewById(R.id.tv_login);
         et_email = (EditText)view.findViewById(R.id.et_email);
@@ -70,6 +73,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     if(matcherEmail.matches()==true){
                         if (pass1.equals(pass2)){
                             Snackbar.make(getView(), "Xử lí đăng ký", Snackbar.LENGTH_LONG).show();
+                            progress.setVisibility(View.VISIBLE);
                             registerProcess(email,pass2,progress);
                         }else {
                             Snackbar.make(getView(), "Mật khẩu nhập lại không chính xác", Snackbar.LENGTH_LONG).show();
@@ -87,14 +91,18 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     private void registerProcess(String email, String pass, ProgressBar progress){
-        Toast.makeText(getView().getContext(), ApiBase.ADDUSER, Toast.LENGTH_SHORT).show();
         AsyncAddUser asyncAddUser = new AsyncAddUser(email,pass,getView().getContext(),progress);
         asyncAddUser.execute(ApiBase.ADDUSER);
 
         try {
             JSONObject jsonObject = new JSONObject(asyncAddUser.get());
-
-            Toast.makeText(getView().getContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
+            if(Boolean.parseBoolean(jsonObject.getString(StringBase.STATUS))){
+                // Kết quả trả về đăng ký thành công
+                Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();
+            }else {
+                Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();
+            }
+            progress.setVisibility(View.INVISIBLE);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -102,25 +110,18 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-//        response.enqueue(new Callback<ServerResponse>() {
-//            @Override
-//            public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
-//                ServerResponse resp = response.body();
-//                Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-//                progress.setVisibility(View.INVISIBLE);             }
-//
-//            @Override
-//            public void onFailure(Call<ServerResponse> call, Throwable t) {
-//                progress.setVisibility(View.INVISIBLE);
-//                Log.d(Constants.TAG,"failed");
-//                Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show(); }
-//        });
 
     }
 
     private void goToLogin(){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(StringBase.EMAIL,et_email.getText().toString());
+        editor.putString(StringBase.PASS,et_pass2.getText().toString());
+        editor.apply();
+
         Fragment login = new LoginFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame,login);
-        ft.commit();     }
+        ft.commit();
+    }
 }

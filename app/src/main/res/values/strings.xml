@@ -8,7 +8,8 @@
     <string name="Matkhau_moi">Mật khẩu mới</string>
     <string name="Nhaclai_matkhau">Nhắc lại mật khẩu</string>
     <string name="Mucdangky">Đăng ký tài khoản mới</string>
-    <string name="Quen_matkhau">Đồng ý</string>
+    <string name="Quen_matkhau">Quên Mật Khẩu</string>
+    <string name="Btn_sendmail">Xác Nhận</string>
     <string name="Truong_korong">Không được bỏ trống !</string>
     <string name="Dangky_tieude">Đăng Ký Tài Khoản</string>
     <string name="Dangky">Đăng Ký</string>
