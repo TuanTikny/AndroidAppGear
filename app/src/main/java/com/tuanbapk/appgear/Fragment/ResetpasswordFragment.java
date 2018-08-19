@@ -20,6 +20,7 @@ public class ResetpasswordFragment extends Fragment implements View.OnClickListe
     private EditText et_email,et_code,et_password;
     private TextView tv_timer;
     private ProgressBar progress;
+    private TextView tv_login;
     private boolean isResetInitiated = false;
     private String email;
     private CountDownTimer countDownTimer;
@@ -33,16 +34,18 @@ public class ResetpasswordFragment extends Fragment implements View.OnClickListe
     }
 
     private void initViews(View view) {
-        btn_reset = (AppCompatButton)view.findViewById(R.id.btn_reset);
-        tv_timer = (TextView)view.findViewById(R.id.timer);
-        et_code = (EditText)view.findViewById(R.id.et_code);
-        et_email = (EditText)view.findViewById(R.id.et_email);
-        et_password = (EditText)view.findViewById(R.id.et_password);
+        tv_login = view.findViewById(R.id.tv_login);
+        btn_reset = view.findViewById(R.id.btn_reset);
+        tv_timer = view.findViewById(R.id.timer);
+        et_code = view.findViewById(R.id.et_code);
+        et_email = view.findViewById(R.id.et_email);
+        et_password = view.findViewById(R.id.et_password);
         et_password.setVisibility(View.GONE);
         et_code.setVisibility(View.GONE);
         tv_timer.setVisibility(View.GONE);
         btn_reset.setOnClickListener(this);
-        progress = (ProgressBar)view.findViewById(R.id.progress);
+        tv_login.setOnClickListener(this);
+        progress = view.findViewById(R.id.progress);
     }
 
     private void initiateResetPasswordProcess(String email) {
@@ -118,7 +121,7 @@ public class ResetpasswordFragment extends Fragment implements View.OnClickListe
                 tv_timer.setText("Time remaining : " + millisUntilFinished / 1000);         }
 
             public void onFinish() {
-                Snackbar.make(getView(), "Time Out ! Request again to reset password.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(getView(), "Vui Lòng Vào Mail để lấy code xác nhận", Snackbar.LENGTH_LONG).show();
                 goToLogin();
             }
         }.start();
@@ -155,6 +158,12 @@ public class ResetpasswordFragment extends Fragment implements View.OnClickListe
 
                 }
 
+                break;
+            case R.id.tv_login:
+                Fragment login = new LoginFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_frame,login);
+                ft.commit();
                 break;
         }
     }

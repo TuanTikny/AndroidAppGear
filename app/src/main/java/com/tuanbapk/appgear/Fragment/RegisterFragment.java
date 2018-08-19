@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.tuanbapk.appgear.Base.ApiBase;
 import com.tuanbapk.appgear.Base.StringBase;
-import com.tuanbapk.appgear.ConnectData.AsyncAddUser;
+import com.tuanbapk.appgear.ConnectData.AsyncUserLoAd;
 import com.tuanbapk.appgear.R;
 
 import org.json.JSONException;
@@ -74,7 +74,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                         if (pass1.equals(pass2)){
                             Snackbar.make(getView(), "Xử lí đăng ký", Snackbar.LENGTH_LONG).show();
                             progress.setVisibility(View.VISIBLE);
-                            registerProcess(email,pass2,progress);
+                            registerProcess(email,pass2);
                         }else {
                             Snackbar.make(getView(), "Mật khẩu nhập lại không chính xác", Snackbar.LENGTH_LONG).show();
                         }
@@ -90,12 +90,12 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void registerProcess(String email, String pass, ProgressBar progress){
-        AsyncAddUser asyncAddUser = new AsyncAddUser(email,pass,getView().getContext(),progress);
-        asyncAddUser.execute(ApiBase.ADDUSER);
+    private void registerProcess(String email, String pass){
+        AsyncUserLoAd asyncUserLoAd = new AsyncUserLoAd(email,pass,getView().getContext());
+        asyncUserLoAd.execute(ApiBase.ADDUSER);
 
         try {
-            JSONObject jsonObject = new JSONObject(asyncAddUser.get());
+            JSONObject jsonObject = new JSONObject(asyncUserLoAd.get());
             if(Boolean.parseBoolean(jsonObject.getString(StringBase.STATUS))){
                 // Kết quả trả về đăng ký thành công
                 Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();

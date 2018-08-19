@@ -14,7 +14,7 @@
     <string name="Dangky_tieude">Đăng Ký Tài Khoản</string>
     <string name="Dangky">Đăng Ký</string>
     <string name="Quaylai_dangnhap">Trờ lại màn hình đăng nhập</string>
-    <string name="Quenmk_tieude">Vui lòng nhập tài khoản Gmail đã đăng ký</string>
+    <string name="Quenmk_tieude">Nhập Gmail đã đăng ký</string>
     <string name="Laylai_matkhau">Lấy lại mật khẩu</string>
 
 </resources>

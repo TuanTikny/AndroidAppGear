@@ -15,8 +15,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tuanbapk.appgear.Base.ApiBase;
 import com.tuanbapk.appgear.Base.StringBase;
+import com.tuanbapk.appgear.ConnectData.AsyncUserLoAd;
 import com.tuanbapk.appgear.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
     private AppCompatButton btn_login;
@@ -40,11 +47,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void initViews(View view) {
         pref = getActivity().getPreferences(0);
-        btn_login = (AppCompatButton) view.findViewById(R.id.btn_login);
-        edt_email = (EditText) view.findViewById(R.id.et_email);
-        edt_password = (EditText) view.findViewById(R.id.et_password);
-        tv_register = (TextView) view.findViewById(R.id.tv_register);
-        progressBar = (ProgressBar) view.findViewById(R.id.progress);
+        btn_login = view.findViewById(R.id.btn_login);
+        edt_email = view.findViewById(R.id.et_email);
+        edt_password = view.findViewById(R.id.et_password);
+        tv_register = view.findViewById(R.id.tv_register);
+        progressBar = view.findViewById(R.id.progress);
         tv_forgot = view.findViewById(R.id.tv_forgot);
         tv_forgot.setOnClickListener(this);
         tv_register.setOnClickListener(this);
@@ -62,7 +69,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     progressBar.setVisibility(View.VISIBLE);
                     loginProcess(email, password);
                 } else {
-                    Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getView(), getView().getContext().getResources().getString(R.string.Truong_korong), Snackbar.LENGTH_LONG).show();
                 }
                 break;
             case R.id.tv_register:
@@ -70,39 +77,46 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 goToRegister();
                 break;
             case R.id.tv_forgot:
-                Snackbar.make(getView(), "Go to Forgot Password ", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(getView(), getView().getContext().getResources().getString(R.string.Quen_matkhau), Snackbar.LENGTH_LONG).show();
                 goToResetPassword();
                 break;
         }
     }
 
-    private void loginProcess(String email, String password){
-        Toast.makeText(getView().getContext(), "Login Xử lí", Toast.LENGTH_SHORT).show();
+    private void loginProcess(String email, String pass){
 
-//        response.enqueue(new Callback<ServerResponse>() {
-//            @Override
-//            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-//                ServerResponse resp = response.body();
-//                Snackbar.make(getView(),resp.getMessage(),Snackbar.LENGTH_LONG).show();
-//
-//                if(resp.getResult().equals(Constants.SUCCESS)){
-//                    SharedPreferences.Editor editor = pref.edit();
-//                    editor.putBoolean(Constants.IS_LOGGED_IN,true);
-//                    editor.putString(Constants.EMAIL,resp.getUser().getEmail());
-//                    editor.putString(Constants.NAME, resp.getUser().getName());
-//                    editor.putString(Constants.UNIQUE_ID,resp.getUser().getUnique_id());
-//                    editor.apply();
-//                    goToProfile();
-//                }
-//                progressBar.setVisibility(View.INVISIBLE);             }
-//
-//            @Override
-//            public void onFailure(Call<ServerResponse> call, Throwable t) {
-//                progressBar.setVisibility(View.INVISIBLE);
-//                Log.d(Constants.TAG,"failed");
-//                Snackbar.make(getView(),t.getMessage(),Snackbar.LENGTH_LONG).show();
-//            }
-//        });
+        AsyncUserLoAd asyncUserLoAd = new AsyncUserLoAd(email,pass,getView().getContext());
+        asyncUserLoAd.execute(ApiBase.LOGINUSER);
+
+        try {
+            JSONObject jsonObject = new JSONObject(asyncUserLoAd.get());
+            if(Boolean.parseBoolean(jsonObject.getString(StringBase.STATUS))){
+                // Kết quả đăng nhập thành công
+                progressBar.setVisibility(View.INVISIBLE);
+                goToProfile();
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putBoolean(StringBase.IS_LOGGED_IN,true);
+                // Lấy json con
+                JSONObject jsoncon = (JSONObject) jsonObject.get("inforUser");
+
+                editor.putInt(StringBase.ID,Integer.parseInt(jsoncon.getString("id")));
+                editor.putString(StringBase.EMAIL,jsoncon.getString("email"));
+                editor.putString(StringBase.NAME,jsoncon.getString("name"));
+                editor.putString(StringBase.BIRTHDAY,jsoncon.getString("birthday"));
+                editor.putString(StringBase.PHONE,jsoncon.getString("phone"));
+                editor.apply();
+            }else {
+                Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     private void goToRegister() {
@@ -112,11 +126,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         ft.commit();
     }
     private void goToProfile() {
+        Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
         Fragment profile = new ProfileFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame, profile);
         ft.commit();
-        Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+
     }
     private void goToResetPassword(){
         Fragment reset = new ResetpasswordFragment();

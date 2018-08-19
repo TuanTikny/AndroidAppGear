@@ -3,34 +3,22 @@ package com.tuanbapk.appgear.ConnectData;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.tuanbapk.appgear.Base.StringBase;
 
 import java.io.IOException;
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AsyncAddUser extends AsyncTask<String,Void,String> {
-
+public class AsyncUserLoAd extends AsyncTask<String,Void,String> {
     String email,pass;
     Context context;
-    ProgressBar progressBar;
 
-    public AsyncAddUser(String email, String pass, Context context, ProgressBar progressBar) {
+    public AsyncUserLoAd(String email, String pass, Context context) {
         this.email = email;
         this.pass = pass;
         this.context = context;
-        this.progressBar = progressBar;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        progressBar.setVisibility(View.VISIBLE);
-        super.onPreExecute();
     }
     @Override
     protected String doInBackground(String... strings) {
@@ -51,14 +39,6 @@ public class AsyncAddUser extends AsyncTask<String,Void,String> {
         }
         return null;
     }
-
-    @Override
-    protected void onPostExecute(String s) {
-        Log.d("AAAAA",s);
-        progressBar.setVisibility(View.INVISIBLE);
-        super.onPostExecute(s);
-    }
-
 
 
 }

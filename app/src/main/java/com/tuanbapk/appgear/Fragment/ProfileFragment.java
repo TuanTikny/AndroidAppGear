@@ -18,11 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tuanbapk.appgear.Base.StringBase;
 import com.tuanbapk.appgear.R;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
-    private TextView tv_name, tv_email, tv_message;
+    private TextView tv_id, tv_name, tv_email, tv_birthday,tv_phone,tv_message;
     private SharedPreferences pref;
     private AppCompatButton btn_change_password, btn_logout;
     private EditText edt_old_password, edt_new_password;
@@ -34,22 +35,30 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         initViews(view);
-        return view;     }
+        return view;
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         pref = getActivity().getPreferences(0);
-//        tv_name.setText("Welcome : " + pref.getString(Constants.NAME, ""));
-//        tv_email.setText(pref.getString(Constants.EMAIL, ""));
+      //  tv_id.setText(pref.getString(StringBase.ID, ""));
+        tv_name.setText("Welcome : " + pref.getString(StringBase.NAME, ""));
+        tv_email.setText(pref.getString(StringBase.EMAIL, ""));
+        tv_birthday.setText(pref.getString(StringBase.BIRTHDAY, ""));
+        tv_phone.setText(pref.getString(StringBase.PHONE, ""));
+
     }
 
 
 
     private void initViews(View view) {
-        tv_name = (TextView) view.findViewById(R.id.tv_name);
-        tv_email = (TextView) view.findViewById(R.id.tv_email);
-        btn_change_password = (AppCompatButton) view.findViewById(R.id.btn_chg_password);
-        btn_logout = (AppCompatButton) view.findViewById(R.id.btn_logout);
+        tv_name = view.findViewById(R.id.tv_name);
+        tv_email = view.findViewById(R.id.tv_email);
+        tv_id = view.findViewById(R.id.tv_id);
+        tv_birthday =view.findViewById(R.id.tv_birthday);
+        tv_phone =view.findViewById(R.id.tv_phone);
+        btn_change_password = view.findViewById(R.id.btn_chg_password);
+        btn_logout = view.findViewById(R.id.btn_logout);
         btn_change_password.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
 
@@ -99,20 +108,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 }
                 else {
                     tv_message.setVisibility(View.VISIBLE);
-                    tv_message.setText("Fields are empty");
+                    tv_message.setText(getView().getContext().getResources().getString(R.string.Truong_korong));
                 }
             }
         });
     }
 
     private void logout() {
-//        SharedPreferences.Editor editor = pref.edit();
-//        editor.putBoolean(Constants.IS_LOGGED_IN, false);
-//        editor.putString(Constants.NAME, "");
-//        editor.putString(Constants.EMAIL, "");
-//        editor.putString(Constants.UNIQUE_ID, "");
-//        editor.apply();
-//        goToLogin();
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(StringBase.IS_LOGGED_IN, false);
+        editor.putString(StringBase.NAME, "");
+        editor.putInt(StringBase.ID,-1);
+        editor.putString(StringBase.EMAIL,"");
+        editor.putString(StringBase.PASS,"");
+        editor.putString(StringBase.BIRTHDAY,"");
+        editor.putString(StringBase.PHONE,"");
+        editor.apply();
+        goToLogin();
     }
 
     private void goToLogin() {
