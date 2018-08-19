@@ -1,0 +1,8 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="ic_menu_infor" type="drawable">@android:drawable/ic_dialog_info</item>
+    <item name="ic_menu_changepass" type="drawable">@android:drawable/ic_menu_edit</item>
+    <item name="ic_menu_products" type="drawable">@android:drawable/ic_menu_preferences</item>
+    <item name="ic_menu_oders" type="drawable">@android:drawable/ic_menu_compass</item>
+    <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>
+    <item name="ic_menu_out" type="drawable">@android:drawable/ic_lock_power_off</item>
+</resources>

@@ -16,5 +16,12 @@
     <string name="Quaylai_dangnhap">Trờ lại màn hình đăng nhập</string>
     <string name="Quenmk_tieude">Nhập Gmail đã đăng ký</string>
     <string name="Laylai_matkhau">Lấy lại mật khẩu</string>
+    <string name="title_activity_main_products">Danh sách sản phẩm</string>
+    <string name="navigation_drawer_open">Mở Menu</string>
+    <string name="navigation_drawer_close">Đóng Menu</string>
+    <string name="nav_header_title">Gear App</string>
+    <string name="nav_header_subtitle">Sản phẩm phụ kiện cho pc</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Cài đặt</string>
 
 </resources>

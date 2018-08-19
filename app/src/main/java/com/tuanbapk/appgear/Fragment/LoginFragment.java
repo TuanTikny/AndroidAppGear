@@ -1,6 +1,7 @@
 package com.tuanbapk.appgear.Fragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.tuanbapk.appgear.Base.ApiBase;
 import com.tuanbapk.appgear.Base.StringBase;
 import com.tuanbapk.appgear.ConnectData.AsyncUser;
+import com.tuanbapk.appgear.MainProducts;
 import com.tuanbapk.appgear.R;
 
 import org.json.JSONException;
@@ -126,10 +128,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
     private void goToProfile() {
         Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-        Fragment profile = new ProfileFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_frame, profile);
-        ft.commit();
+//        Fragment profile = new ProfileFragment();
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.replace(R.id.fragment_frame, profile);
+//        ft.commit();
+        Intent intent = new Intent();
+        intent.setClass(getView().getContext(), MainProducts.class);
+//        intent.putExtra("tennguoidung",id);
+        startActivity(intent);
+
 
     }
     private void goToResetPassword(){

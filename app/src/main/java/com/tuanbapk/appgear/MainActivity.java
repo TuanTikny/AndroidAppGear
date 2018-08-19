@@ -2,6 +2,7 @@ package com.tuanbapk.appgear;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,14 +18,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         pref = getPreferences(0);
 
         if (pref.getBoolean(StringBase.IS_LOGGED_IN, true)){
-            Fragment profile = new ProfileFragment();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_frame, profile);
-            ft.commit();
+            Intent intent = new Intent();
+            intent.setClass(this, MainProducts.class);
+            startActivity(intent);
         }else {
             Fragment login = new LoginFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
