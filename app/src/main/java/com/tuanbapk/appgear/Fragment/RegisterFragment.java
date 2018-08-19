@@ -5,18 +5,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tuanbapk.appgear.Base.ApiBase;
 import com.tuanbapk.appgear.Base.StringBase;
-import com.tuanbapk.appgear.ConnectData.AsyncUserLoAd;
+import com.tuanbapk.appgear.ConnectData.AsyncUser;
 import com.tuanbapk.appgear.R;
 
 import org.json.JSONException;
@@ -91,11 +89,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     private void registerProcess(String email, String pass){
-        AsyncUserLoAd asyncUserLoAd = new AsyncUserLoAd(email,pass,getView().getContext());
-        asyncUserLoAd.execute(ApiBase.ADDUSER);
+        AsyncUser asyncUser = new AsyncUser(email,pass,"","","",getView().getContext());
+        asyncUser.execute(ApiBase.ADDUSER);
 
         try {
-            JSONObject jsonObject = new JSONObject(asyncUserLoAd.get());
+            JSONObject jsonObject = new JSONObject(asyncUser.get());
             if(Boolean.parseBoolean(jsonObject.getString(StringBase.STATUS))){
                 // Kết quả trả về đăng ký thành công
                 Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();

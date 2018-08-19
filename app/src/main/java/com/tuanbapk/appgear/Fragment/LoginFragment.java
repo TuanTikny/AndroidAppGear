@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 
 import com.tuanbapk.appgear.Base.ApiBase;
 import com.tuanbapk.appgear.Base.StringBase;
-import com.tuanbapk.appgear.ConnectData.AsyncUserLoAd;
+import com.tuanbapk.appgear.ConnectData.AsyncUser;
 import com.tuanbapk.appgear.R;
 
 import org.json.JSONException;
@@ -85,11 +84,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void loginProcess(String email, String pass){
 
-        AsyncUserLoAd asyncUserLoAd = new AsyncUserLoAd(email,pass,getView().getContext());
-        asyncUserLoAd.execute(ApiBase.LOGINUSER);
+        AsyncUser asyncUser = new AsyncUser(email,pass,"","","",getView().getContext());
+        asyncUser.execute(ApiBase.LOGINUSER);
 
         try {
-            JSONObject jsonObject = new JSONObject(asyncUserLoAd.get());
+            JSONObject jsonObject = new JSONObject(asyncUser.get());
             if(Boolean.parseBoolean(jsonObject.getString(StringBase.STATUS))){
                 // Kết quả đăng nhập thành công
                 progressBar.setVisibility(View.INVISIBLE);

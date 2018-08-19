@@ -13,7 +13,15 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.tuanbapk.appgear.Base.ApiBase;
+import com.tuanbapk.appgear.Base.StringBase;
+import com.tuanbapk.appgear.ConnectData.AsyncUser;
 import com.tuanbapk.appgear.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 public class ResetpasswordFragment extends Fragment implements View.OnClickListener {
     private AppCompatButton btn_reset;
@@ -49,70 +57,56 @@ public class ResetpasswordFragment extends Fragment implements View.OnClickListe
     }
 
     private void initiateResetPasswordProcess(String email) {
+        AsyncUser asyncUser = new AsyncUser(email,"","","","",getView().getContext());
+        asyncUser.execute(ApiBase.FORGOTPASS);
 
-
-//        response.enqueue(new Callback<ServerResponse>() {
-//            @Override
-//            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-//                ServerResponse resp = response.body();
-//                Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-//                if(resp.getResult().equals(Constants.SUCCESS)){
-//                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-//                    et_email.setVisibility(View.GONE);
-//                    et_code.setVisibility(View.VISIBLE);
-//                    et_password.setVisibility(View.VISIBLE);
-//                    tv_timer.setVisibility(View.VISIBLE);
-//                    btn_reset.setText("Change Password");
-//                    isResetInitiated = true;
-//                    startCountdownTimer();
-//
-//                } else {
-//
-//                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-//
-//                }             progress.setVisibility(View.INVISIBLE);         }
-//
-//            @Override
-//            public void onFailure(Call<ServerResponse> call, Throwable t) {
-//                progress.setVisibility(View.INVISIBLE);
-//                Log.d(Constants.TAG,"failed");
-//                Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
-//            }
-//        });
+        try {
+            JSONObject jsonObject = new JSONObject(asyncUser.get());
+            if(Boolean.parseBoolean(jsonObject.getString(StringBase.STATUS))){
+                // Kết quả trả về gửi mail thành công
+                Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();
+                et_email.setVisibility(View.GONE);
+                    et_code.setVisibility(View.VISIBLE);
+                    et_password.setVisibility(View.VISIBLE);
+                    tv_timer.setVisibility(View.VISIBLE);
+                    btn_reset.setText("Cập Nhật Mật Khẩu");
+                    isResetInitiated = true;
+                    startCountdownTimer();
+            }else {
+                Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();
+            }
+            progress.setVisibility(View.INVISIBLE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     private void finishResetPasswordProcess(String email, String code, String password) {
-
-
-
-
-//        response.enqueue(new Callback<ServerResponse>() {
-//            @Override
-//            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-//                ServerResponse resp = response.body();
-//                Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-//
-//                if(resp.getResult().equals(Constants.SUCCESS)){
-//
-//                    Snackbar.make(getView(), resp.getMessage(),
-//                            Snackbar.LENGTH_LONG).show();
-//                    countDownTimer.cancel();
-//                    isResetInitiated = false;
-//                    goToLogin();
-//
-//                } else {
-//                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-//                }
-//                progress.setVisibility(View.INVISIBLE);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ServerResponse> call, Throwable t) {
-//                progress.setVisibility(View.INVISIBLE);
-//                Log.d(Constants.TAG,"failed");
-//                Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
-//            }
-//        });
+        AsyncUser asyncUser = new AsyncUser(email,"",code,"",password,getView().getContext());
+        asyncUser.execute(ApiBase.UPDATEPASSWITHCODE);
+        try {
+            JSONObject jsonObject = new JSONObject(asyncUser.get());
+            if(Boolean.parseBoolean(jsonObject.getString(StringBase.STATUS))){
+                // Kết quả trả về cập nhật pass bằng code thành công
+                Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();
+                countDownTimer.cancel();
+                isResetInitiated = false;
+                goToLogin();
+            }else {
+                Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();
+            }
+            progress.setVisibility(View.INVISIBLE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     private void startCountdownTimer(){
