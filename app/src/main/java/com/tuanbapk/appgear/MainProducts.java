@@ -2,6 +2,8 @@ package com.tuanbapk.appgear;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,20 +18,39 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.tuanbapk.appgear.Base.StringBase;
+import com.tuanbapk.appgear.Fragmentmain.InforProFragment;
+import com.tuanbapk.appgear.Fragmentmain.InforUserFragment;
 import com.tuanbapk.appgear.Fragmentmain.ProductsFragment;
 import com.tuanbapk.appgear.R;
 
-public class MainProducts extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainProducts extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_products);
+        pref = getPreferences(0);
+
+        Intent intent = MainProducts.this.getIntent();
+        if (intent == null){
+            return;
+        }
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(StringBase.IS_LOGGED_IN, intent.getBooleanExtra(StringBase.IS_LOGGED_IN,true));
+        editor.putString(StringBase.NAME, intent.getStringExtra(StringBase.NAME));
+        editor.putString(StringBase.ID,String.valueOf(intent.getIntExtra(StringBase.ID,0)));
+        editor.putString(StringBase.EMAIL,intent.getStringExtra(StringBase.EMAIL));
+        editor.putString(StringBase.PASS,intent.getStringExtra(StringBase.PASS));
+        editor.putString(StringBase.BIRTHDAY,intent.getStringExtra(StringBase.BIRTHDAY));
+        editor.putString(StringBase.PHONE,intent.getStringExtra(StringBase.PHONE));
+        editor.apply();
+
 
         Fragment profile = new ProductsFragment();
-       FragmentTransaction ft = getFragmentManager().beginTransaction();
-       ft.replace(R.id.fragment_main, profile);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_main, profile);
         ft.commit();
 
 
@@ -53,9 +74,9 @@ public class MainProducts extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -89,17 +110,37 @@ public class MainProducts extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_infor) {
-            // Handle the camera action
+            Fragment profile = new InforUserFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_main, profile);
+            ft.commit();
         } else if (id == R.id.nav_changepass) {
 
         } else if (id == R.id.nav_products) {
-
+            Fragment profile = new ProductsFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_main, profile);
+            ft.commit();
         } else if (id == R.id.nav_oders) {
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_out) {
             Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.setClass(this, MainActivity.class);
+
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(StringBase.IS_LOGGED_IN, false);
+            editor.putString(StringBase.NAME, "");
+            editor.putString(StringBase.ID,"-1");
+            editor.putString(StringBase.EMAIL,"");
+            editor.putString(StringBase.PASS,"");
+            editor.putString(StringBase.BIRTHDAY,"");
+            editor.putString(StringBase.PHONE,"");
+            editor.apply();
+            intent.putExtra(StringBase.TOKEN,"logout");
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

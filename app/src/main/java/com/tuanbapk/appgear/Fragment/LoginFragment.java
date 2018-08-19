@@ -86,7 +86,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void loginProcess(String email, String pass){
 
-        AsyncUser asyncUser = new AsyncUser(email,pass,"","","",getView().getContext());
+        AsyncUser asyncUser = new AsyncUser(email,pass,"","","","","","","",getView().getContext());
         asyncUser.execute(ApiBase.LOGINUSER);
 
         try {
@@ -94,18 +94,28 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             if(Boolean.parseBoolean(jsonObject.getString(StringBase.STATUS))){
                 // Kết quả đăng nhập thành công
                 progressBar.setVisibility(View.INVISIBLE);
-                goToProfile();
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean(StringBase.IS_LOGGED_IN,true);
                 // Lấy json con
                 JSONObject jsoncon = (JSONObject) jsonObject.get("inforUser");
 
+                Intent intent = new Intent();
+                intent.setClass(getView().getContext(), MainProducts.class);
+                intent.putExtra(StringBase.IS_LOGGED_IN,true);
+                intent.putExtra(StringBase.ID,Integer.parseInt(jsoncon.getString("id")));
+                intent.putExtra(StringBase.EMAIL,jsoncon.getString("email"));
+                intent.putExtra(StringBase.NAME,jsoncon.getString("name"));
+                intent.putExtra(StringBase.BIRTHDAY,jsoncon.getString("birthday"));
+                intent.putExtra(StringBase.PHONE,jsoncon.getString("phone"));
+                startActivity(intent);
+
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putBoolean(StringBase.IS_LOGGED_IN,true);
                 editor.putInt(StringBase.ID,Integer.parseInt(jsoncon.getString("id")));
                 editor.putString(StringBase.EMAIL,jsoncon.getString("email"));
                 editor.putString(StringBase.NAME,jsoncon.getString("name"));
                 editor.putString(StringBase.BIRTHDAY,jsoncon.getString("birthday"));
                 editor.putString(StringBase.PHONE,jsoncon.getString("phone"));
                 editor.apply();
+
             }else {
                 Snackbar.make(getView(), jsonObject.getString(StringBase.KETQUA), Snackbar.LENGTH_LONG).show();
                 progressBar.setVisibility(View.INVISIBLE);
@@ -126,19 +136,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         ft.replace(R.id.fragment_frame, register);
         ft.commit();
     }
-    private void goToProfile() {
-        Toast.makeText(getView().getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//        Fragment profile = new ProfileFragment();
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.replace(R.id.fragment_frame, profile);
-//        ft.commit();
-        Intent intent = new Intent();
-        intent.setClass(getView().getContext(), MainProducts.class);
-//        intent.putExtra("tennguoidung",id);
-        startActivity(intent);
 
-
-    }
     private void goToResetPassword(){
         Fragment reset = new ResetpasswordFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();

@@ -57,7 +57,7 @@ public class ResetpasswordFragment extends Fragment implements View.OnClickListe
     }
 
     private void initiateResetPasswordProcess(String email) {
-        AsyncUser asyncUser = new AsyncUser(email,"","","","",getView().getContext());
+        AsyncUser asyncUser = new AsyncUser(email,"","","","","","","","",getView().getContext());
         asyncUser.execute(ApiBase.FORGOTPASS);
 
         try {
@@ -86,7 +86,7 @@ public class ResetpasswordFragment extends Fragment implements View.OnClickListe
     }
 
     private void finishResetPasswordProcess(String email, String code, String password) {
-        AsyncUser asyncUser = new AsyncUser(email,"",code,"",password,getView().getContext());
+        AsyncUser asyncUser = new AsyncUser(email,"",code,"",password,"","","","",getView().getContext());
         asyncUser.execute(ApiBase.UPDATEPASSWITHCODE);
         try {
             JSONObject jsonObject = new JSONObject(asyncUser.get());

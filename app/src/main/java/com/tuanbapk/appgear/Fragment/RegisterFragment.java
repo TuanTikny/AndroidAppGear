@@ -89,7 +89,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     private void registerProcess(String email, String pass){
-        AsyncUser asyncUser = new AsyncUser(email,pass,"","","",getView().getContext());
+        AsyncUser asyncUser = new AsyncUser(email,pass,"","","","","","","",getView().getContext());
         asyncUser.execute(ApiBase.ADDUSER);
 
         try {

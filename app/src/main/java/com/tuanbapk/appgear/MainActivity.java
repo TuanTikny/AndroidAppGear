@@ -20,17 +20,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         pref = getPreferences(0);
 
-        if (pref.getBoolean(StringBase.IS_LOGGED_IN, true)){
-            Intent intent = new Intent();
-            intent.setClass(this, MainProducts.class);
-            startActivity(intent);
-        }else {
             Fragment login = new LoginFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_frame,login);
             ft.commit();
-        }
-
 
     }
 }

@@ -23,5 +23,9 @@
     <string name="nav_header_subtitle">Sản phẩm phụ kiện cho pc</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Cài đặt</string>
-
+    
+    <string name="infor_user">Thông tin cá nhân</string>
+    <string name="name_user">Họ Tên</string>
+    <string name="birth_day">Ngày sinh</string>
+    <string name="phone">Số điện thoại</string>
 </resources>
