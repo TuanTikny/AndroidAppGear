@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">AppGear</string>
+    <string name="dangnhap_tieude">Đăng Nhập Shop Phụ Kiện PC</string>
+    <string name="dangnhap">Đăng Nhập</string>
+    <string name="Email">Tài Khoản Email</string>
+    <string name="Matkhau">Mật Khẩu</string>
+    <string name="Matkhau_cu">Mật khẩu cũ</string>
+    <string name="Matkhau_moi">Mật khẩu mới</string>
+    <string name="Nhaclai_matkhau">Nhắc lại mật khẩu</string>
+    <string name="Mucdangky">Đăng ký tài khoản mới</string>
+    <string name="Quen_matkhau">Đồng ý</string>
+    <string name="Truong_korong">Không được bỏ trống !</string>
+    <string name="Dangky_tieude">Đăng Ký Tài Khoản</string>
+    <string name="Dangky">Đăng Ký</string>
+    <string name="Quaylai_dangnhap">Trờ lại màn hình đăng nhập</string>
+    <string name="Quenmk_tieude">Vui lòng nhập tài khoản Gmail đã đăng ký</string>
+    <string name="Laylai_matkhau">Lấy lại mật khẩu</string>
+
+</resources>
