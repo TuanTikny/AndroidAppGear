@@ -14,6 +14,8 @@ public class User {
 
     private String keycode;
 
+    public User(int i, String email, String nameuser, String phone, String birthday) {
+    }
 
 
     public int getId() {

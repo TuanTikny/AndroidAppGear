@@ -1,7 +1,7 @@
 package com.tuanbapk.appgear.Base;
 
 public class ApiBase {
-    public static String API = "http://192.168.0.123:3000/gearapi";
+    public static String API = "http://192.168.137.95:3000/gearapi";
     public static final String
             ADDUSER = API+"/addUser",
             LOGINUSER=API+"/loginUser",

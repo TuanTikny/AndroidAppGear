@@ -69,7 +69,7 @@
         <ru.katso.livebutton.LiveButton
             android:id="@+id/btn_chonmua"
             android:layout_marginTop="10dp"
-            android:text="    Thêm giỏ hàng"
+            android:text="    Đặt Mua"
             android:textSize="16sp"
             android:padding="10dp"
             android:textStyle="bold"

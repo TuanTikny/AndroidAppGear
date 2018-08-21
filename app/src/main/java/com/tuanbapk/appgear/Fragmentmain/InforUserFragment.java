@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -46,12 +45,6 @@ public class InforUserFragment extends Fragment {
         btn_update = view.findViewById(R.id.btn_update);
         et_birthday = view.findViewById(R.id.et_birthday);
 
-//        editor.putString(StringBase.NAME, "");
-//        editor.putInt(StringBase.ID,-1);
-//        editor.putString(StringBase.EMAIL,"");
-//        editor.putString(StringBase.PASS,"");
-//        editor.putString(StringBase.BIRTHDAY,"");
-//        editor.putString(StringBase.PHONE,"");
 
         tv_email.setText(pref.getString(StringBase.EMAIL, ""));
         name_user.setText(pref.getString(StringBase.NAME, ""));

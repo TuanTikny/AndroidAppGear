@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.tuanbapk.appgear.Base.StringBase;
 import com.tuanbapk.appgear.Fragmentmain.InforProFragment;
 import com.tuanbapk.appgear.Fragmentmain.InforUserFragment;
+import com.tuanbapk.appgear.Fragmentmain.PassUserFragment;
 import com.tuanbapk.appgear.Fragmentmain.ProductsFragment;
 import com.tuanbapk.appgear.R;
 
@@ -61,7 +62,11 @@ public class MainProducts extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Xem Đơn Hàng", Snackbar.LENGTH_LONG)
+                Fragment profile = new ProductsFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_main, profile);
+                ft.commit();
+                Snackbar.make(view, "Danh sách Sản Phẩm", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -115,7 +120,10 @@ public class MainProducts extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_main, profile);
             ft.commit();
         } else if (id == R.id.nav_changepass) {
-
+            Fragment profile = new PassUserFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_main, profile);
+            ft.commit();
         } else if (id == R.id.nav_products) {
             Fragment profile = new ProductsFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
